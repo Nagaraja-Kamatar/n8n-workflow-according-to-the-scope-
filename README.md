@@ -1,244 +1,202 @@
 <img width="856" height="535" alt="n8n" src="https://github.com/user-attachments/assets/d6ef8be7-f06e-4037-88b2-1503d1e70c52" />
 
-# n8n-nodes-starter
 
-This starter repository helps you build custom integrations for [n8n](https://n8n.io). It includes example nodes, credentials, the node linter, and all the tooling you need to get started.
+<img width="1431" height="703" alt="reteal ai" src="https://github.com/user-attachments/assets/12ece747-9e65-4351-89a7-70363b476f09" />
 
-## Quick Start
 
-> [!TIP]
-> **New to building n8n nodes?** The fastest way to get started is with `npm create @n8n/node`. This command scaffolds a complete node package for you using the [@n8n/node-cli](https://www.npmjs.com/package/@n8n/node-cli).
+<img width="468" height="721" alt="Screenshot 2025-11-26 at 5 43 04 PM" src="https://github.com/user-attachments/assets/f071bd32-bab0-49a0-be9e-f98736a0f68a" />
 
-**To create a new node package from scratch:**
 
-```bash
-npm create @n8n/node
-```
 
-**Already using this starter? Start developing with:**
+# n8n-ADRVA Starter
 
-```bash
-npm run dev
-```
+This repository is a customized version of the **n8n-nodes-starter** tailored to the **Automated Debt Recovery Voice Agent (ADRVA)** project. ADRVA uses n8n to stitch together Google Sheets (debtors), Google Drive (product docs), Retell AI / OpenAI (Cindy agent), and Twilio (telephony) to place polite, compliant voice calls, answer debtor questions, schedule callbacks, and log everything for managers.
 
-This starts n8n with your nodes loaded and hot reload enabled.
+---
 
-## What's Included
+## Project Overview
 
-This starter repository includes two example nodes to learn from:
+**Project name:** Automated Debt Recovery Voice Agent (ADRVA) — n8n Beta
 
-- **[Example Node](nodes/Example/)** - A simple starter node that shows the basic structure with a custom `execute` method
-- **[GitHub Issues Node](nodes/GithubIssues/)** - A complete, production-ready example built using the **declarative style**:
-  - **Low-code approach** - Define operations declaratively without writing request logic
-  - Multiple resources (Issues, Comments)
-  - Multiple operations (Get, Get All, Create)
-  - Two authentication methods (OAuth2 and Personal Access Token)
-  - List search functionality for dynamic dropdowns
-  - Proper error handling and typing
-  - Ideal for HTTP API-based integrations
+**Purpose:** Build an n8n integration and workflow that:
 
-> [!TIP]
-> The declarative/low-code style (used in GitHub Issues) is the recommended approach for building nodes that interact with HTTP APIs. It significantly reduces boilerplate code and handles requests automatically.
+* Reads debtors from Google Sheets
+* Reads product documentation from Google Drive
+* Calls debtors via Twilio
+* Uses Retell AI / OpenAI for natural voice conversation (Cindy persona)
+* Parses intents (payment, callback, transfer, info)
+* Logs outcomes to Google Sheets and generates HTML manager reports
 
-Browse these examples to understand both approaches, then modify them or create your own.
+**Core services used:** Google Sheets, Google Drive, Twilio, OpenAI (gpt-4o-mini, tts-1, whisper-1), n8n.
 
-## Finding Inspiration
+---
 
-Looking for more examples? Check out these resources:
+## Repository Contents (customized)
 
-- **[npm Community Nodes](https://www.npmjs.com/search?q=keywords:n8n-community-node-package)** - Browse thousands of community-built nodes on npm using the `n8n-community-node-package` tag
-- **[n8n Built-in Nodes](https://github.com/n8n-io/n8n/tree/master/packages/nodes-base/nodes)** - Study the source code of n8n's official nodes for production-ready patterns and best practices
-- **[n8n Credentials](https://github.com/n8n-io/n8n/tree/master/packages/nodes-base/credentials)** - See how authentication is implemented for various services
+* `nodes/` - example nodes and any ADRVA-specific nodes (e.g., GoogleDriveParser, RetellAIConnector)
+* `credentials/` - sample credential definitions for Google, Twilio, and OpenAI
+* `workflows/` - example n8n JSON workflows (import-ready): `adrva-main-workflow.json`
+* `docs/` - project docs: README, deployment guides, compliance checklist
+* `scripts/` - helper scripts (callback parser, PDF extractor helpers)
 
-These are excellent resources to understand how to structure your nodes, handle different API patterns, and implement advanced features.
+---
 
-## Prerequisites
+## Quick Start (ADRVA-specific)
 
-Before you begin, install the following on your development machine:
+> Prerequisites: Node.js v22+, npm, git, an n8n development environment (see below).
 
-### Required
-
-- **[Node.js](https://nodejs.org/)** (v22 or higher) and npm
-  - Linux/Mac/WSL: Install via [nvm](https://github.com/nvm-sh/nvm)
-  - Windows: Follow [Microsoft's NodeJS guide](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows)
-- **[git](https://git-scm.com/downloads)**
-
-### Recommended
-
-- Follow n8n's [development environment setup guide](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/)
-
-> [!NOTE]
-> The `@n8n/node-cli` is included as a dev dependency and will be installed automatically when you run `npm install`. The CLI includes n8n for local development, so you don't need to install n8n globally.
-
-## Getting Started with this Starter
-
-Follow these steps to create your own n8n community node package:
-
-### 1. Create Your Repository
-
-[Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template, then clone it:
+1. Clone this repository created from the n8n starter template.
 
 ```bash
-git clone https://github.com/<your-organization>/<your-repo-name>.git
-cd <your-repo-name>
-```
-
-### 2. Install Dependencies
-
-```bash
+git clone https://github.com/Nagaraja-Kamatar/n8n-workflow-according-to-the-scope-.git
+cd n8n-adrva-starter
 npm install
 ```
 
-This installs all required dependencies including the `@n8n/node-cli`.
+2. Prepare environment variables (create a `.env` file). Example `.env`:
 
-### 3. Explore the Examples
+```
+N8N_HOST=http://localhost
+N8N_PORT=5678
+GOOGLE_OAUTH_CLIENT_ID=xxx
+GOOGLE_OAUTH_CLIENT_SECRET=xxx
+TWILIO_ACCOUNT_SID=xxx
+TWILIO_AUTH_TOKEN=xxx
+TWILIO_FROM_NUMBER=+1234567890
+OPENAI_API_KEY=sk-xxx
+COMPANY_NAME="AI Workshop"
+COMPANY_PHONE=+11234567890
+```
 
-Browse the example nodes in [nodes/](nodes/) and [credentials/](credentials/) to understand the structure:
-
-- Start with [nodes/Example/](nodes/Example/) for a basic node
-- Study [nodes/GithubIssues/](nodes/GithubIssues/) for a real-world implementation
-
-### 4. Build Your Node
-
-Edit the example nodes to fit your use case, or create new node files by copying the structure from [nodes/Example/](nodes/Example/).
-
-> [!TIP]
-> If you want to scaffold a completely new node package, use `npm create @n8n/node` to start fresh with the CLI's interactive generator.
-
-### 5. Configure Your Package
-
-Update `package.json` with your details:
-
-- `name` - Your package name (must start with `n8n-nodes-`)
-- `author` - Your name and email
-- `repository` - Your repository URL
-- `description` - What your node does
-
-Make sure your node is registered in the `n8n.nodes` array.
-
-### 6. Develop and Test Locally
-
-Start n8n with your node loaded:
+3. Run dev server (hot reload):
 
 ```bash
 npm run dev
 ```
 
-This command runs `n8n-node dev` which:
+Open n8n at `http://localhost:5678` and confirm custom nodes are visible.
 
-- Builds your node with watch mode
-- Starts n8n with your node available
-- Automatically rebuilds when you make changes
-- Opens n8n in your browser (usually http://localhost:5678)
+---
 
-You can now test your node in n8n workflows!
+## ADRVA Workflow (high-level)
 
-> [!NOTE]
-> Learn more about CLI commands in the [@n8n/node-cli documentation](https://www.npmjs.com/package/@n8n/node-cli).
+This repository contains `workflows/adrva-main-workflow.json` — a ready-to-import n8n workflow that implements the following:
 
-### 7. Lint Your Code
+1. **Trigger**: Cron / Manual / Webhook to start calling a batch of debtors.
+2. **Google Sheets - Read Debtors**: Fetch rows from `Debtors` sheet (columns: id, name, phone, amount, product, purchase_date, product_doc_id, email, status, last_call_date, callback_date, notes).
+3. **Google Drive - Get Product Doc**: If `product_doc_id` exists, download file and extract text via `nodes/scripts/pdf-extract` or 3rd-party OCR.
+4. **Retell AI / OpenAI - Conversation**: Send debtor context + product doc snippet to LLM (system prompt = Cindy persona). Use `gpt-4o-mini` for intent; use `tts-1` for voice (or generate audio asset and pass to Twilio).
+5. **Twilio - Make Call**: Place outbound call with TwiML; Twilio webhooks map to n8n webhook nodes to handle Gather / speech transcriptions.
+6. **Function - Intent Parser**: Parse structured JSON from the LLM (intent, callback_time, payment_link, transfer, reply_text) and branch logic.
+7. **Google Sheets - Log Call**: Append to `Logs` sheet with fields (timestamp, call_id, debtor_row_id, name, phone, amount, product, outcome, callback_date, notes, recording_url).
+8. **Callback Scheduler**: If callback requested, either write to `Callbacks` sheet and let Cron pick it up or create a `Wait` node for low-volume setups.
+9. **HTML Report**: Build a daily manager HTML report and save to Google Drive.
 
-Check for errors:
+---
 
-```bash
-npm run lint
+## Google Sheets Templates
+
+Included in `workflows/templates/`:
+
+* `Debtors.csv` (id,name,phone,amount,product,purchase_date,product_doc_id,email,status,last_call_date,callback_date,notes)
+* `Logs.csv` (timestamp,call_id,debtor_row_id,name,phone,amount,product,outcome,callback_date,notes,recording_url)
+* `Callbacks.csv` (debtor_row_id,callback_time,timezone,status)
+
+Import these to your Google Drive and set the Sheet IDs in the workflow credential config.
+
+---
+
+## Node Details (custom helpers)
+
+* **nodes/RetellAI/**
+
+  * A connector node that wraps calls to OpenAI / Retell API, handles structured JSON response parsing, and optionally generates audio files with `tts-1`.
+
+* **nodes/PDFExtractor/**
+
+  * Extracts text from PDF binary blobs using an internal parser or an external OCR service (Google Vision / Textract integration). Returns `short_product_description` and `full_product_text`.
+
+* **nodes/CallbackParser/**
+
+  * Uses `chrono-node` to parse phrases like "in 3 days" or "tomorrow morning" into ISO8601 datetimes in the debtor timezone.
+
+See each node's README under `nodes/*` for usage and config.
+
+---
+
+## Credentials Setup (exact names)
+
+Create credentials in n8n with these names (the workflow references them by name):
+
+* `googleSheetsOAuth` - Google Sheets (OAuth2 client id/secret) — scope: read/write to Drive & Sheets
+* `googleDriveOAuth` - Google Drive (OAuth2 client id/secret)
+* `twilioApi` - Twilio (Account SID + Auth Token + From number)
+* `openaiApi` - OpenAI / Retell (API Key)
+
+Set these credentials in n8n > Credentials before importing workflows.
+
+---
+
+## Retell AI / LLM System Prompt (Cindy persona)
+
+Place this prompt in the RetellAI node as the system message (replace `{{company}}` variables programmatically):
+
+```
+You are Cindy, a professional and empathetic voice assistant calling from {{COMPANY_NAME}}. Use the debtor context and any product_doc_text to answer questions concisely and politely. If user requests a callback, output JSON with intent: 'callback' and callback_time in ISO8601. If user requests transfer, output intent: 'transfer'. If user asks about payment and requests a link, output intent: 'payment' and include payment_link. Always return a short reply_text suitable for TTS and a notes field for logs.
 ```
 
-Auto-fix issues when possible:
+---
 
-```bash
-npm run lint:fix
-```
+## Workflow Import & Testing
 
-### 8. Build for Production
+1. Import `workflows/adrva-main-workflow.json` into n8n (Workflows > Import).
+2. Set the workflow credentials to the names above.
+3. Do a dry run with a test `Debtors` row (use a personal number).
+4. Monitor the `Logs` sheet for appended rows and inspect generated HTML reports in Drive.
 
-When ready to publish:
+---
 
-```bash
-npm run build
-```
+## Production Notes & Compliance
 
-This compiles your TypeScript code to the `dist/` folder.
+* **PCI**: Do NOT collect full card numbers via voice unless you have a PCI-compliant process. Prefer secure payment links or transfer to a human PCI endpoint.
+* **DNC**: Respect Do-Not-Call lists and local call-time restrictions. The workflow includes a check to skip numbers that match a `DNC` list sheet.
+* **Consent**: Include consent language where required and announce call recording if enabled.
+* **Scalability**: Replace long-running `Wait` nodes with a Cron + Callbacks sheet approach for high volume.
 
-### 9. Prepare for Publishing
+---
 
-Before publishing:
+## CI / Linting / Tests
 
-1. **Update documentation**: Replace this README with your node's documentation. Use [README_TEMPLATE.md](README_TEMPLATE.md) as a starting point.
-2. **Update the LICENSE**: Add your details to the [LICENSE](LICENSE.md) file.
-3. **Test thoroughly**: Ensure your node works in different scenarios.
+Use the provided scripts from the starter for dev:
 
-### 10. Publish to npm
+* `npm run dev` — start n8n with local nodes
+* `npm run lint` — lint the node code
+* `npm run build` — build for production
 
-Publish your package to make it available to the n8n community:
+Add unit tests for node helpers (CallbackParser, PDFExtractor) if you customize them.
 
-```bash
-npm publish
-```
+---
 
-Learn more about [publishing to npm](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+## Publishing your node (optional)
 
-### 11. Submit for Verification (Optional)
+Follow n8n guidelines to publish your community node package if you want others to reuse it. Ensure:
 
-Get your node verified for n8n Cloud:
+* MIT license
+* No sensitive data in repo
+* Follow the `n8n.nodes` registration convention
 
-1. Ensure your node meets the [requirements](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/):
-   - Uses MIT license ✅ (included in this starter)
-   - No external package dependencies
-   - Follows n8n's design guidelines
-   - Passes quality and security review
+---
 
-2. Submit through the [n8n Creator Portal](https://creators.n8n.io/nodes)
+## Support & Next Steps
 
-**Benefits of verification:**
+If you want, I can now:
 
-- Available directly in n8n Cloud
-- Discoverable in the n8n nodes panel
-- Verified badge for quality assurance
-- Increased visibility in the n8n community
+* Generate the **ready-to-import `workflows/adrva-main-workflow.json`** (complete with placeholders for your Sheet IDs, Twilio number, and OpenAI key).
+* Produce a **step-by-step node config guide** (exact fields to paste into each n8n node).
+* Create a **short demo video script** to show the workflow end-to-end.
 
-## Available Scripts
+Tell me which of these you'd like next and I will generate it immediately.
 
-This starter includes several npm scripts to streamline development:
-
-| Script                | Description                                                      |
-| --------------------- | ---------------------------------------------------------------- |
-| `npm run dev`         | Start n8n with your node and watch for changes (runs `n8n-node dev`) |
-| `npm run build`       | Compile TypeScript to JavaScript for production (runs `n8n-node build`) |
-| `npm run build:watch` | Build in watch mode (auto-rebuild on changes)                    |
-| `npm run lint`        | Check your code for errors and style issues (runs `n8n-node lint`) |
-| `npm run lint:fix`    | Automatically fix linting issues when possible (runs `n8n-node lint --fix`) |
-| `npm run release`     | Create a new release (runs `n8n-node release`)                   |
-
-> [!TIP]
-> These scripts use the [@n8n/node-cli](https://www.npmjs.com/package/@n8n/node-cli) under the hood. You can also run CLI commands directly, e.g., `npx n8n-node dev`.
-
-## Troubleshooting
-
-### My node doesn't appear in n8n
-
-1. Make sure you ran `npm install` to install dependencies
-2. Check that your node is listed in `package.json` under `n8n.nodes`
-3. Restart the dev server with `npm run dev`
-4. Check the console for any error messages
-
-### Linting errors
-
-Run `npm run lint:fix` to automatically fix most common issues. For remaining errors, check the [n8n node development guidelines](https://docs.n8n.io/integrations/creating-nodes/).
-
-### TypeScript errors
-
-Make sure you're using Node.js v22 or higher and have run `npm install` to get all type definitions.
-
-## Resources
-
-- **[n8n Node Documentation](https://docs.n8n.io/integrations/creating-nodes/)** - Complete guide to building nodes
-- **[n8n Community Forum](https://community.n8n.io/)** - Get help and share your nodes
-- **[@n8n/node-cli Documentation](https://www.npmjs.com/package/@n8n/node-cli)** - CLI tool reference
-- **[n8n Creator Portal](https://creators.n8n.io/nodes)** - Submit your node for verification
-- **[Submit Community Nodes Guide](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/)** - Verification requirements and process
-
-## Contributing
 
 Have suggestions for improving this starter? [Open an issue](https://github.com/n8n-io/n8n-nodes-starter/issues) or submit a pull request!
 
