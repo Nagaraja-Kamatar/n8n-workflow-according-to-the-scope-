@@ -1,4 +1,4 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+<img width="856" height="535" alt="n8n" src="https://github.com/user-attachments/assets/d6ef8be7-f06e-4037-88b2-1503d1e70c52" />
 
 # n8n-nodes-starter
 
